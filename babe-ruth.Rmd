@@ -1,0 +1,61 @@
+---
+title: "Babe Ruth"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: rows
+    vertical_layout: fill
+---
+
+```{r setup, include=FALSE}
+library(Lahman)
+library(dplyr)
+library(ggplot2)
+library(flexdashboard)
+
+result<-Batting%>%
+        filter(playerID=='ruthba01')%>%
+        select(yearID,SO,HR)
+```
+
+Sidebar {.sidebar}
+-----------------------------------------------------------------------
+Here are some statistics about Babe Ruth during his baseball career.
+
+Babe Ruth held the record for most home runs hit in a season until the '60s. He also held the record for the most career home runs until the '70s.
+
+
+
+Row {data-height=350}
+-----------------------------------------------------------------------
+
+### Home Runs vs. Strikeouts
+
+```{r}
+ggplot()+
+  geom_point(data=result,aes(x=SO,y=HR),color="red")+
+  xlab("Strikeouts")+
+  ylab("Home Runs")
+```
+
+### Home Runs
+
+```{r}
+ggplot()+
+  geom_histogram(data=result,aes(x=HR),color="blue",fill="white",bins=5)+
+  xlab("Home Runs")
+```
+
+
+Column {data-height=650}
+-----------------------------------------------------------------------
+
+### Strikeouts by Year
+
+```{r}
+ggplot()+
+  geom_line(data=result,aes(x=yearID,y=HR),stat="identity",color="green")+
+  geom_point(data=result,aes(x=yearID,y=HR),stat="identity",color="pink")+
+  xlab("Year")+
+  ylab("Home Runs")
+```
+
